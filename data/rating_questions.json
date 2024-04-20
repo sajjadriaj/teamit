@@ -1,0 +1,92 @@
+{
+    "Forward": [
+        {
+            "question": "How effectively does the player convert scoring opportunities into goals?",
+            "aspect": "Finishing"
+        },
+        {
+            "question": "How well does the player position themselves to receive passes?",
+            "aspect": "Positioning"
+        },
+        {
+            "question": "How effectively does the player control the ball under pressure in attacking situations?",
+            "aspect": "Ball Control"
+        },
+        {
+            "question": "How successfully does the player dribble past opponents in the final third?",
+            "aspect": "Dribbling"
+        },
+        {
+            "question": "How well does the player move off the ball to create space for themselves and others?",
+            "aspect": "Off-the-Ball Movement"
+        },
+        {
+            "question": "How proficient is the player at winning aerial duels and scoring from headers?",
+            "aspect": "Heading"
+        },
+        {
+            "question": "How creative is the player in generating scoring opportunities for themselves or teammates?",
+            "aspect": "Creativity"
+        }
+    ],
+    "Midfielder": [
+        {
+            "question": "How accurately does the player pass the ball under various conditions?",
+            "aspect": "Passing Accuracy"
+        },
+        {
+            "question": "How effectively does the player read the game and anticipate movements?",
+            "aspect": "Vision"
+        },
+        {
+            "question": "How well does the player maintain possession under pressure?",
+            "aspect": "Ball Retention"
+        },
+        {
+            "question": "How effectively does the player contribute to defensive duties?",
+            "aspect": "Defensive Contribution"
+        },
+        {
+            "question": "How consistently does the player perform in terms of movement and effort throughout the match?",
+            "aspect": "Work Rate"
+        },
+        {
+            "question": "How successful is the player at winning tackles and recovering the ball?",
+            "aspect": "Tackling"
+        },
+        {
+            "question": "How effective is the player at setting up goalscoring opportunities?",
+            "aspect": "Playmaking"
+        }
+    ],
+    "Defender": [
+        {
+            "question": "How effectively does the player tackle opponents to win back possession?",
+            "aspect": "Tackling Accuracy"
+        },
+        {
+            "question": "How well does the player position themselves to intercept passes and block shots?",
+            "aspect": "Positional Awareness"
+        },
+        {
+            "question": "How successful is the player in aerial challenges both defensively and offensively?",
+            "aspect": "Aerial Duels"
+        },
+        {
+            "question": "How accurately does the player pass the ball when under defensive pressure?",
+            "aspect": "Passing Under Pressure"
+        },
+        {
+            "question": "How effectively does the player mark opposing attackers and prevent them from finding space?",
+            "aspect": "Marking"
+        },
+        {
+            "question": "How quickly does the player recover after losing position or making a mistake?",
+            "aspect": "Recovery"
+        },
+        {
+            "question": "How well does the player communicate with teammates and organize the defense?",
+            "aspect": "Leadership and Communication"
+        }
+    ]
+}
