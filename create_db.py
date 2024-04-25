@@ -51,20 +51,20 @@ for pos in positions:
     for ques in pos.questions:
         print(f"  Question: {ques.content} ({ques.aspect})")
 
-with open("data/players.txt", "r") as file:
-    names = file.readlines()
+# with open("data/players.txt", "r") as file:
+#     names = file.readlines()
 
-# Clean up names and remove duplicates by using a set
-names = set(name.strip() for name in names if name.strip())
-print(names)
+# # Clean up names and remove duplicates by using a set
+# names = set(name.strip() for name in names if name.strip())
+# print(names)
 
-# Insert each name into the database
-for name in names:
-    # Check if the player already exists to prevent duplicates
-    existing_player = session.query(Player).filter_by(name=name).first()
-    if not existing_player:
-        player = Player(name=name)
-        session.add(player)
+# # Insert each name into the database
+# for name in names:
+#     # Check if the player already exists to prevent duplicates
+#     existing_player = session.query(Player).filter_by(name=name).first()
+#     if not existing_player:
+#         player = Player(name=name)
+#         session.add(player)
 
-session.commit()
+# session.commit()
 session.close()

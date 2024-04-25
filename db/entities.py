@@ -8,7 +8,10 @@ Base = declarative_base()
 class Player(Base):
     __tablename__ = "players"
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    name = Column(String, unique=False, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    username = Column(String, unique=True, nullable=False)
     ratings = relationship("Rating", back_populates="player")  # Link ratings to players
 
 
