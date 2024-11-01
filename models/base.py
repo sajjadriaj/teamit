@@ -11,53 +11,22 @@ class TeamFormulator:
         positions = {}
         for player, ratings in team.items():
             max_rating = max(ratings.values())
-            position = [pos for pos, rating in ratings.items() if rating == max_rating][
-                0
-            ]
+            position = [pos for pos, rating in ratings.items() if rating == max_rating][0]
             positions[player] = position
         return positions
 
-    # def print_teams(self, team_name, team, positions):
-    #     print(f"{team_name}:")
-    #     position_players = {"forward": [], "midfielder": [], "defender": []}
-    #     position_scores = {"forward": 0, "midfielder": 0, "defender": 0}
-
-    #     for player, position in positions.items():
-    #         position_players[position].append(player)
-    #         position_scores[position] += team[player][position]
-
-    #     for position in ["forward", "midfielder", "defender"]:
-    #         print(f"  {position.capitalize()}:")
-    #         for player in position_players[position]:
-    #             print(f"    - {player}")
-    #         print(
-    #             f"    Overall {position.capitalize()} Score: {position_scores[position]}"
-    #         )
-
-    #     print("Balance Score:", self.calculate_balance_score(team))
-    #     print()
-
     def formulate_teams(self, algorithm):
-        best_team1, best_team2 = algorithm.run()
-        positions_team1 = self.determine_positions(best_team1)
-        positions_team2 = self.determine_positions(best_team2)
-
-        # Get balance scores for each team
-        balance_score1 = self.calculate_balance_score(best_team1)
-        balance_score2 = self.calculate_balance_score(best_team2)
-
-        return {
-            "Team 1": {
-                "team": best_team1,
-                "positions": positions_team1,
-                "balance_score": balance_score1,
-            },
-            "Team 2": {
-                "team": best_team2,
-                "positions": positions_team2,
-                "balance_score": balance_score2,
-            },
-        }
+        best_teams = algorithm.run()
+        results = {}
+        for i, team in enumerate(best_teams):
+            positions = self.determine_positions(team)
+            balance_score = self.calculate_balance_score(team)
+            results[f"Team {i + 1}"] = {
+                "team": team,
+                "positions": positions,
+                "balance_score": balance_score,
+            }
+        return results
 
     def calculate_balance_score(self, team):
         scores = {"forward": 0, "midfielder": 0, "defender": 0}
@@ -72,9 +41,7 @@ class BanditAlgorithm(ABC):
     def __init__(self, players, iterations):
         self.players = players
         self.iterations = iterations
-        self.team1 = {}
-        self.team2 = {}
-        self.best_teams = None
+        self.teams = []
 
     @abstractmethod
     def select_players_to_swap(self):
@@ -84,11 +51,11 @@ class BanditAlgorithm(ABC):
     def run(self):
         pass
 
-    def swap_players(self, player1, player2):
-        team1_player = self.team1.pop(player1)
-        team2_player = self.team2.pop(player2)
-        self.team1[player2] = team2_player
-        self.team2[player1] = team1_player
+    def swap_players(self, team1_idx, team2_idx, player1, player2):
+        self.teams[team1_idx][player1], self.teams[team2_idx][player2] = (
+            self.teams[team2_idx][player2],
+            self.teams[team1_idx][player1],
+        )
 
     def calculate_balance_score(self, team):
         scores = {"forward": 0, "midfielder": 0, "defender": 0}
@@ -108,37 +75,26 @@ class BanditAlgorithm(ABC):
                     max_rated_positions.add(position)
         return False
 
-    def initialize_teams(self):
-        self.team1 = {}
-        self.team2 = {}
+    def initialize_teams(self, num_teams):
+        self.teams = [{} for _ in range(num_teams)]
         player_list = list(self.players.items())
         random.shuffle(player_list)
 
         for i, (player, skills) in enumerate(player_list):
-            if i % 2 == 0:
-                self.team1[player] = skills
-            else:
-                self.team2[player] = skills
+            self.teams[i % num_teams][player] = skills
 
-    def evaluate_swap(self, player1, player2):
-        current_team1 = dict(self.team1)
-        current_team2 = dict(self.team2)
+    def evaluate_swap(self, team1_idx, team2_idx, player1, player2):
+        current_teams = [dict(team) for team in self.teams]
 
-        self.swap_players(player1, player2)
+        self.swap_players(team1_idx, team2_idx, player1, player2)
 
-        if self.has_two_max_rated_players(self.team1) or self.has_two_max_rated_players(
-            self.team2
-        ):
+        if any(self.has_two_max_rated_players(team) for team in self.teams):
             # Revert the swap if it violates the constraint
-            self.team1 = current_team1
-            self.team2 = current_team2
+            self.teams = current_teams
             return None
 
-        new_balance = self.calculate_balance_score(
-            self.team1
-        ) + self.calculate_balance_score(self.team2)
-        self.team1 = current_team1
-        self.team2 = current_team2
+        new_balance = sum(self.calculate_balance_score(team) for team in self.teams)
+        self.teams = current_teams
 
         return new_balance
 

@@ -8,7 +8,7 @@ from db.entities import (
     Rating,
 )  # Assume these are the same models from previous discussions
 
-st.set_page_config(page_title="Rankings", page_icon="👋", layout="wide")
+st.set_page_config(page_title="Rankings", page_icon="⚽", layout="wide")
 
 
 # Database connection

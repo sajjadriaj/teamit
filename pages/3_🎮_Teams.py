@@ -11,7 +11,7 @@ import json
 from models.bandits import EpsilonGreedy, UCB, ThompsonSampling
 from models.base import TeamFormulator
 
-st.set_page_config(page_title="Teams", page_icon="👋", layout="wide")
+st.set_page_config(page_title="Teams", page_icon="🎮", layout="wide")
 
 
 # Database connection
@@ -50,26 +50,40 @@ def get_all_players_ratings():
     return player_ratings
 
 
-def print_teams(team_name, team_data):
-    st.subheader(f"{team_name} (Balance Score: {team_data['balance_score']})")
-    position_players = {"forward": [], "midfielder": [], "defender": []}
-    position_scores = {"forward": 0, "midfielder": 0, "defender": 0}
-
-    # Extract player positions and their scores
-    for player, position in team_data["positions"].items():
-        position_players[position].append(player)
-        position_scores[position] += team_data["team"][player][position]
-
-    # Display players grouped by positions and their scores
-    for position in ["forward", "midfielder", "defender"]:
-        pos_total = position_scores[position]
-        num_players = len(position_players[position])
-        pos_avg_score = pos_total / num_players if num_players > 0 else 0
-        st.markdown(f"**{position.capitalize()} (Score: {pos_avg_score:.2f}):**")
-        for player in position_players[position]:
-            st.text(f"    - {player}")
-        st.text(f"    Overall {position.capitalize()} Score: {pos_total}")
-        st.write("")  # Add some spacing
+def print_teams_as_table(results):
+    st.markdown("### Formulated Teams")
+    num_teams = len(results)
+    headers = [f"Team {i+1}" for i in range(num_teams)]
+    
+    # Build the Markdown table header
+    markdown_table = "| " + " | ".join(headers) + " |\n"
+    markdown_table += "| " + " | ".join(["---"] * num_teams) + " |\n"
+    
+    # Find the maximum team size
+    max_team_size = max(len(team_data["team"]) for team_data in results.values())
+    
+    # Build the table rows
+    for i in range(max_team_size):
+        row = []
+        for team_data in results.values():
+            team = list(team_data["team"])
+            if i < len(team):
+                player = team[i]
+                row.append(f"{player} ({team_data['positions'].get(player, 'N/A')})")
+            else:
+                row.append("")
+        markdown_table += "| " + " | ".join(row) + " |\n"
+    
+    # Remove the separator before the balance scores
+    # markdown_table += "| " + " | ".join(["---"] * num_teams) + " |\n"
+    
+    # Add the balance scores in bold
+    balance_scores = []
+    for team_data in results.values():
+        balance_scores.append(f"**{team_data['balance_score']}**")
+    markdown_table += "| " + " | ".join(balance_scores) + " |\n"
+    
+    st.markdown(markdown_table)
 
 
 def app():
@@ -90,34 +104,24 @@ def app():
             if st.checkbox(player_name, key=player_name):
                 selected_players.append(player_name)
 
+    # Input to specify the number of teams to form
+    num_teams = st.number_input("Number of teams to form", min_value=2, value=2, step=1)
+
     # Button to show selected player ratings and generate JSON
-    if st.button("Show Selected Player Ratings"):
+    if st.button("Formulate Teams"):
         if selected_players:
-            st.subheader("Selected Players and Their Ratings:")
-            selected_ratings = {}
-            for player in selected_players:
-                ratings = all_player_ratings.get(player, {})
-                selected_ratings[player] = ratings
-                # st.markdown(f"**{player}**")
-                # for position, score in ratings.items():
-                #     st.write(f"{position}: {score:.2f}/10")
+            selected_ratings = {player: all_player_ratings[player] for player in selected_players}
 
             formulator = TeamFormulator(selected_ratings)
             epsilon_greedy = EpsilonGreedy(
-                selected_ratings, iterations=1000, epsilon=0.1
+                selected_ratings, iterations=1000, epsilon=0.1, num_teams=num_teams
             )
 
             # Formulate teams using the epsilon-greedy algorithm
             results = formulator.formulate_teams(epsilon_greedy)
-            col1, col2 = st.columns(2)
-            with col1:
-                print_teams("Team 1", results["Team 1"])
-            with col2:
-                print_teams("Team 2", results["Team 2"])
 
-            # Display the JSON for the selected players
-            # selected_json = json.dumps(selected_ratings, indent=4)
-            # st.text_area("JSON Output for Selected Players:", selected_json, height=200)
+            # Print teams as a markdown table
+            print_teams_as_table(results)
         else:
             st.write("No players selected.")
 

@@ -1,3 +1,5 @@
 streamlit
 SQLAlchemy
 numpy
+plotly
+streamlit-sortables

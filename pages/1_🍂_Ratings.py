@@ -3,6 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db.entities import Base, Position, Player, Question, Rating
 
+
+st.set_page_config(page_title="Ratings", page_icon="🍂", layout="wide")
+
 engine = create_engine("sqlite:///rating.db")
 Base.metadata.create_all(engine)
 
