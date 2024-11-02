@@ -665,5 +665,28 @@
         "How effectively does the player mark opposing attackers and prevent them from finding space?": 6,
         "How quickly does the player recover after losing position or making a mistake?": 7,
         "How well does the player communicate with teammates and organize the defense?": 7
+    },
+    "Zahed Hossain": {
+        "How effectively does the player convert scoring opportunities into goals?": 7,
+        "How well does the player position themselves to receive passes?": 7,
+        "How effectively does the player control the ball under pressure in attacking situations?": 8,
+        "How successfully does the player dribble past opponents in the final third?": 6,
+        "How well does the player move off the ball to create space for themselves and others?": 6,
+        "How proficient is the player at winning aerial duels and scoring from headers?": 5,
+        "How creative is the player in generating scoring opportunities for themselves or teammates?": 7,
+        "How accurately does the player pass the ball under various conditions?": 8,
+        "How effectively does the player read the game and anticipate movements?": 7,
+        "How well does the player maintain possession under pressure?": 7,
+        "How effectively does the player contribute to defensive duties?": 4,
+        "How consistently does the player perform in terms of movement and effort throughout the match?": 5,
+        "How successful is the player at winning tackles and recovering the ball?": 4,
+        "How effective is the player at setting up goalscoring opportunities?": 7,
+        "How effectively does the player tackle opponents to win back possession?": 4,
+        "How well does the player position themselves to intercept passes and block shots?": 4,
+        "How successful is the player in aerial challenges both defensively and offensively?": 4,
+        "How accurately does the player pass the ball when under defensive pressure?": 7,
+        "How effectively does the player mark opposing attackers and prevent them from finding space?": 4,
+        "How quickly does the player recover after losing position or making a mistake?": 4,
+        "How well does the player communicate with teammates and organize the defense?": 5
     }
 }

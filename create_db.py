@@ -85,10 +85,10 @@ def populate_ratings(session, clear_existing=False):
     session.commit()
 
 def main():
-    drop_all_tables(engine)
-    Base.metadata.create_all(engine)
-    prepopulate_positions(session)
-    populate_questions(session)
+    # drop_all_tables(engine)
+    # Base.metadata.create_all(engine)
+    # prepopulate_positions(session)
+    # populate_questions(session)
     insert_players(session, drop_existing=True)
     populate_ratings(session, clear_existing=True)
     session.close()
